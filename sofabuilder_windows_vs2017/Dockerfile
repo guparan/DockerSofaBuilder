@@ -18,10 +18,11 @@ RUN C:\TEMP\vs_buildtools.exe --wait --quiet --norestart --nocache `
 	--add microsoft.visualstudio.component.testtools.buildtools `
 	--add microsoft.visualstudio.component.vc.atlmfc `
 	--add microsoft.visualstudio.component.vc.cli.support `
+	--includeRecommended `
 	& C:\TEMP\wait_process_to_end.bat "vs_bootstrapper.exe" `
 	& C:\TEMP\wait_process_to_end.bat "vs_BuildTools.exe" `
 	& C:\TEMP\wait_process_to_end.bat "vs_installer.exe"
-ENV VS150COMNTOOLS C:\BuildTools\Common7\Tools
+ENV VS150COMNTOOLS C:\BuildTools\Common7\Tools\
 
 # Install Qt
 ENV QT_VERSION_MAJOR 5
@@ -49,15 +50,15 @@ RUN @powershell -NoProfile -InputFormat None -ExecutionPolicy Bypass -Command `
 	&& SET "PATH=%PATH%;%ALLUSERSPROFILE%\chocolatey\bin"
 
 # Install dependencies with Chocolatey
-RUN choco install -y git
- && choco install -y zip
- && choco install -y unzip
- && choco install -y curl
- && choco install -y ninja
- && choco install -y cmake --installargs 'ADD_CMAKE_TO_PATH=System'
- && choco install -y python2
- && refreshenv
- && pip install --upgrade pip
+RUN choco install -y git `
+ && choco install -y zip `
+ && choco install -y unzip `
+ && choco install -y curl `
+ && choco install -y ninja `
+ && choco install -y cmake --installargs 'ADD_CMAKE_TO_PATH=System' `
+ && choco install -y python2 `
+ && refreshenv `
+ && pip install --upgrade pip `
  && pip install numpy scipy
 
 # Finalize environment
