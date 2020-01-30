@@ -18,7 +18,8 @@ RUN C:\TEMP\vs_buildtools.exe --wait --quiet --norestart --nocache `
 	--add microsoft.visualstudio.component.testtools.buildtools `
 	--add microsoft.visualstudio.component.vc.atlmfc `
 	--add microsoft.visualstudio.component.vc.cli.support `
-	& ping -n 60 127.0.0.1 `
+	& C:\TEMP\wait_process_to_end.bat "vs_bootstrapper.exe" `
+	& C:\TEMP\wait_process_to_end.bat "vs_BuildTools.exe" `
 	& C:\TEMP\wait_process_to_end.bat "vs_installer.exe"
 # Start developer command prompt with any other commands specified.
 ENTRYPOINT C:\BuildTools\Common7\Tools\VsDevCmd.bat &&
