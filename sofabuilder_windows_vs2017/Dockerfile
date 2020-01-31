@@ -22,14 +22,16 @@ RUN C:\TEMP\vs_buildtools.exe --wait --quiet --norestart --nocache `
 	& C:\TEMP\wait_process_to_end.bat "vs_bootstrapper.exe" `
 	& C:\TEMP\wait_process_to_end.bat "vs_BuildTools.exe" `
 	& C:\TEMP\wait_process_to_end.bat "vs_installer.exe"
-ENV VS150COMNTOOLS C:\BuildTools\Common7\Tools\
+ENV VS150COMNTOOLS C:\BuildTools\Common7\Tools\\
+ENV VSINSTALLDIR C:\BuildTools\\
 
 # Install Qt
 ENV QT_VERSION_MAJOR 5
 ENV QT_VERSION_MINOR 12
 ENV QT_VERSION_PATCH 6
-ENV QTDIR C:\Qt
-ENV QTDIR64 C:\Qt
+ENV QTDIR C:\Qt\${QT_VERSION_MAJOR}.${QT_VERSION_MINOR}.${QT_VERSION_PATCH}\msvc2017_64
+ENV QTDIR64 $QTDIR
+ENV Qt5_DIR $QTDIR
 ADD https://download.qt.io/official_releases/online_installers/qt-unified-windows-x86-online.exe C:\TEMP\qtinstaller.exe
 ADD https://raw.githubusercontent.com/guparan/DockerSofaBuilder/master/sofabuilder_windows_vs2017/qtinstaller_controlscript_template.qs C:\TEMP\qtinstaller_controlscript_template.qs
 RUN powershell -Command "(gc C:\TEMP\qtinstaller_controlscript_template.qs) -replace '_QTVERSION_', %QT_VERSION_MAJOR%%QT_VERSION_MINOR%%QT_VERSION_PATCH% | Out-File -encoding ASCII C:\TEMP\qtinstaller_controlscript.qs"
@@ -57,9 +59,10 @@ RUN choco install -y git `
  && choco install -y ninja `
  && choco install -y cmake --installargs 'ADD_CMAKE_TO_PATH=System' `
  && choco install -y python2 `
- && refreshenv `
- && pip install --upgrade pip `
- && pip install numpy scipy
+ && refreshenv
+RUN pip install --upgrade pip `
+ && pip install numpy scipy `
+ && refreshenv
 
 # Finalize environment
 ENV PYTHONIOENCODING UTF-8
@@ -70,6 +73,7 @@ RUN setx PATH "%PATH%;C:\Program Files (x86)\Windows Kits\8.1\bin\x64" `
  && setx PATH "%PATH%;C:\boost" `
  && setx PATH "%PATH%;C:\boost\lib64-msvc-14.1" `
  && setx PATH "%PATH%;C:\Program Files\Git\bin" `
+ && setx PATH "%PATH%;C:\Windows\System32\downlevel" `
  && refreshenv
 
 # Default entry point if no other command specified
