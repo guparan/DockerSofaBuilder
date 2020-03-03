@@ -10,7 +10,8 @@
 
 var INSTALL_COMPONENTS = [
     "qt.qt5._QTVERSION_.win64_msvc2017_64",
-    "qt.qt5._QTVERSION_.qtcharts.win64_msvc2017_64",
+    "qt.qt5._QTVERSION_.qtcharts",
+    "qt.qt5._QTVERSION_.qtcharts.win64_msvc2017_64"
 ]
 
 
